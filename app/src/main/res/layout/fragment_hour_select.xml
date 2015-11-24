@@ -1,0 +1,23 @@
+<marc.internetmonitor.UI.MovingLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             tools:context="marc.internetmonitor.UI.HourSelectFragment"
+             android:background="@color/internetmonitor_activitybackground">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/scrollViewHrTabs">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/linearLayoutHrTabs">
+        </LinearLayout>
+    </ScrollView>
+
+</marc.internetmonitor.UI.MovingLinearLayout>

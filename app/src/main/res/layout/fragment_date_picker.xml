@@ -1,0 +1,41 @@
+<marc.internetmonitor.UI.MovingLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             tools:context="marc.internetmonitor.UI.DatePickerFragment"
+              android:orientation="vertical">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <DatePicker
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/datePicker"
+        android:layout_gravity="left|top"
+        android:calendarViewShown="true"
+        android:spinnersShown="false"
+        style="@style/internetmonitorListStyle"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="SELECT"
+        android:id="@+id/buttonSelectDate"
+        style="@style/internetmonitorButtonStyle"
+        android:layout_margin="10dp"
+        android:padding="10dp"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="SELECT TODAY"
+        android:id="@+id/buttonSelectToday"
+        style="@style/internetmonitorButtonStyle"
+        android:layout_margin="10dp"
+        android:padding="10dp"/>
+
+
+</marc.internetmonitor.UI.MovingLinearLayout>

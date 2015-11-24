@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="internetmonitor_activitybackground">#252525</color>
+    <color name="internetmonitor_buttonbackground">#595959</color>
+    <color name="internetmonitor_buttonbackground_pressed">#252525</color>
+    <color name="internetmonitor_buttoncolor">#ffffff</color>
+    <color name="internetmonitor_listbackground">#dddddd</color>
+    <color name="internetmonitor_listcolor">#6f6f6f</color>
+    <color name="internetmonitor_headerbackground">#1ab492</color>
+
+
+</resources>

@@ -1,0 +1,24 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+    </style>
+
+    <style name="internetmonitorButtonStyle">
+        <item name="android:background">@drawable/internetmonitor_button_selector_background</item>
+        <item name="android:textColor">@color/internetmonitor_buttoncolor</item>
+    </style>
+
+    <style name="internetmonitorHeaderStyle">
+        <item name="android:background">@drawable/internetmonitor_header_background</item>
+        <item name="android:textColor">@color/internetmonitor_buttoncolor</item>
+    </style>
+
+    <style name="internetmonitorListStyle">
+        <item name="android:background">@drawable/internetmonitor_list_background</item>
+        <item name="android:textColor">@color/internetmonitor_listcolor</item>
+    </style>
+
+
+</resources>

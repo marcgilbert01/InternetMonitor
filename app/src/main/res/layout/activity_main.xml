@@ -1,0 +1,180 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/activity_vertical_margin"
+                android:paddingBottom="@dimen/activity_vertical_margin"
+                tools:context=".MainActivity"
+              android:orientation="vertical"
+              android:background="@color/internetmonitor_activitybackground"
+              android:id="@+id/mainLinearLayout">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="10dp"
+        >
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/internetmonitorHeaderStyle"
+            android:padding="3dp"
+            android:id="@+id/linearLayoutSelectDate">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageView"
+                android:src="@drawable/calendaricon"
+                android:padding="5dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="05/10/2015"
+                android:id="@+id/textViewSelectedDate"
+                android:gravity="center"
+                android:textIsSelectable="false"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_marginRight="3dp"
+                android:textColor="#f9f9f9"
+                android:textSize="12sp"
+                android:textStyle="bold"/>
+
+        </LinearLayout>
+
+        <TableLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:stretchColumns="*"
+            android:shrinkColumns="*">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:id="@+id/textViewDailySuccess"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textColor="#f8f8f8"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:id="@+id/textViewDailyFailed"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textColor="#f8f8f8"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:id="@+id/textViewDailyMissing"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textColor="#f8f8f8"
+                    />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="success"
+                    android:id="@+id/textView2"
+                    android:gravity="center_horizontal"
+                    android:textColor="#f9f9f9"
+                    android:textStyle="bold"
+                    android:textSize="12sp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="failed"
+                    android:id="@+id/textView3"
+                    android:gravity="center_horizontal"
+                    android:textColor="#f9f9f9"
+                    android:textStyle="bold"
+                    android:textSize="12sp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="no data"
+                    android:id="@+id/textView4"
+                    android:gravity="center_horizontal"
+                    android:textColor="#f9f9f9"
+                    android:textStyle="bold"
+                    android:textSize="12sp"/>
+            </TableRow>
+
+        </TableLayout>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/imageViewSettingsIcon"
+            android:src="@drawable/settingsicon"
+            android:layout_weight="0.1"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            style="@style/internetmonitorHeaderStyle"/>
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/frameLayoutTop">
+    </FrameLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/frameLayoutHourReportContainer"
+            android:layout_weight="1"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="5dp">
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/frameLayoutHourSelectContainer"
+            >
+        </FrameLayout>
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

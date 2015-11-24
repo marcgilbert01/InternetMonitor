@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <integer name="animation_time">400</integer>
+    <integer name="animation_half_time">200</integer>
+    <integer name="animation_startOffset_time">134</integer>
+    <integer name="animation_startOffset_remaining_time">268</integer>
+
+</resources>
