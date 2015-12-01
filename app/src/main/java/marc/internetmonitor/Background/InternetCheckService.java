@@ -161,6 +161,7 @@ public class InternetCheckService extends Service {
 
         }
 
+        // GET
         public Integer getResponseCode() {
             return responseCode;
         }

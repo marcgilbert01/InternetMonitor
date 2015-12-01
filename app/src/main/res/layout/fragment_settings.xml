@@ -3,50 +3,77 @@
              android:layout_width="match_parent"
              android:layout_height="match_parent"
              tools:context="marc.internetmonitor.UI.SettingsFragment"
-              android:orientation="vertical"
-                                            android:background="#cca9a9"
+             android:orientation="vertical"
     >
 
     <!-- TODO: Update blank fragment layout -->
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Note that this app is intended to be running on main powered device as it will use quite a lot of baterry even on stand by. It will connect every 10 second to a specific URl the same as if a suer would use the internet"
-        android:id="@+id/textView5"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="URL To Check"
-        android:id="@+id/textView"/>
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/editTextUrlToCheck"
-        android:layout_gravity="center_horizontal"/>
-
     <LinearLayout
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        style="@style/internetmonitorListStyle"
+        android:layout_margin="5dp">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Internet Check Service"
-            android:id="@+id/textView6"
-            android:layout_weight="1"/>
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text=""
+            android:id="@+id/textViewSettingsDescription"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="0dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"/>
 
-        <ToggleButton
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="New ToggleButton"
-            android:id="@+id/toggleButtonInternetCheckService"
-            android:checked="false"/>
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="URL To Check"
+                android:id="@+id/textView"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/editTextUrlToCheck"
+                android:layout_gravity="center_horizontal"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Internet Check Service"
+                android:id="@+id/textView6"
+                android:layout_weight="1"/>
+
+            <ToggleButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="New ToggleButton"
+                android:id="@+id/toggleButtonInternetCheckService"
+                android:checked="false"/>
+        </LinearLayout>
+
     </LinearLayout>
 
     <Button
@@ -55,7 +82,7 @@
         android:text="CLOSE"
         android:id="@+id/buttonCloseSettings"
         style="@style/internetmonitorButtonStyle"
-        />
+        android:layout_margin="5dp"/>
 
 
 </marc.internetmonitor.UI.MovingLinearLayout>
