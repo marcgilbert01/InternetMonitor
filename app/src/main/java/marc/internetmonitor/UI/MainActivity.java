@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.Handler;
 
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -77,11 +78,11 @@ public class MainActivity extends Activity implements  HourReportFragment.OnFrag
             @Override
             public void onClick(View v) {
 
-                if( threadLoadConnectionsTotals!=null ){
+                if (threadLoadConnectionsTotals != null) {
                     threadLoadConnectionsTotals.exit = true;
                 }
 
-                Action actionOpenDatePicker = new Action(){
+                Action actionOpenDatePicker = new Action() {
                     @Override
                     public void execute() {
 
@@ -89,7 +90,7 @@ public class MainActivity extends Activity implements  HourReportFragment.OnFrag
 
                         FragmentManager fragmentManager = getFragmentManager();
                         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                        fragmentTransaction.setCustomAnimations(R.animator.topfragment_in_from_top, 0 );
+                        fragmentTransaction.setCustomAnimations(R.animator.topfragment_in_from_top, 0);
                         datePickerFragment = DatePickerFragment.newInstance(selectedDate);
                         fragmentTransaction.replace(R.id.frameLayoutTop, datePickerFragment);
                         fragmentTransaction.commit();
@@ -109,26 +110,12 @@ public class MainActivity extends Activity implements  HourReportFragment.OnFrag
             @Override
             public void onClick(View v) {
 
-                if( threadLoadConnectionsTotals!=null ){
-                    threadLoadConnectionsTotals.exit = true;
+                if( settingsFragment!=null && settingsFragment.isVisible() ) {
+                    closeSettingsFragment();
                 }
-
-                Action action = new Action(){
-                    @Override
-                    public void execute() {
-
-                        super.execute();
-                        FragmentManager fragmentManager = getFragmentManager();
-                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                        fragmentTransaction.setCustomAnimations(R.animator.topfragment_in_from_top, 0 );
-                        settingsFragment = SettingsFragment.newInstance();
-                        fragmentTransaction.replace( R.id.frameLayoutTop, settingsFragment );
-                        fragmentTransaction.commit();
-
-                    }
-                };
-
-                clearFragments(action);
+                else{
+                    openSettingsFrament();
+                }
 
             }
         });
@@ -138,6 +125,85 @@ public class MainActivity extends Activity implements  HourReportFragment.OnFrag
     }
 
 
+    private void openSettingsFrament(){
+
+
+        if( threadLoadConnectionsTotals!=null ){
+            threadLoadConnectionsTotals.exit = true;
+        }
+
+        Action action = new Action(){
+            @Override
+            public void execute() {
+
+                super.execute();
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.setCustomAnimations(R.animator.topfragment_in_from_bottom, 0 );
+                settingsFragment = SettingsFragment.newInstance();
+                fragmentTransaction.replace( R.id.frameLayoutTop, settingsFragment );
+                fragmentTransaction.commit();
+
+            }
+        };
+
+        clearFragments(action);
+
+    }
+
+
+    private void closeSettingsFragment(){
+
+        clearFragments(new Action() {
+            @Override
+            public void execute() {
+                super.execute();
+                // STOP THREAD
+                if (threadLoadConnectionsTotals != null && threadLoadConnectionsTotals.getState() != Thread.State.TERMINATED) {
+                    threadLoadConnectionsTotals.exit = true;
+                }
+                // SET PREVIOUS SELECTED DATE OR CURRENT DATE
+                if (selectedDate == null) {
+                    selectedDate = new Date();
+                }
+                showHourReport(selectedDate);
+                // START THREAD
+                threadLoadConnectionsTotals = new ThreadLoadConnectionsTotals();
+                threadLoadConnectionsTotals.start();
+            }
+        });
+
+
+
+    }
+
+
+
+
+
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if( keyCode == KeyEvent.KEYCODE_MENU ){
+
+            if( settingsFragment!=null && settingsFragment.isVisible() ) {
+                closeSettingsFragment();
+            }
+            else{
+                openSettingsFrament();
+            }
+
+            return true;
+        }
+
+        return super.onKeyDown(keyCode, event);
+    }
+
+
+
+
+
     class Action {
 
         public void execute(){
@@ -145,6 +211,7 @@ public class MainActivity extends Activity implements  HourReportFragment.OnFrag
         }
 
     }
+
 
     @Override
     protected void onResume() {
@@ -270,25 +337,7 @@ public class MainActivity extends Activity implements  HourReportFragment.OnFrag
     @Override
     public void onCloseSettings() {
 
-        clearFragments(new Action() {
-            @Override
-            public void execute() {
-                super.execute();
-                // STOP THREAD
-                if (threadLoadConnectionsTotals != null && threadLoadConnectionsTotals.getState() != Thread.State.TERMINATED) {
-                    threadLoadConnectionsTotals.exit = true;
-                }
-                // SET PREVIOUS SELECTED DATE OR CURRENT DATE
-                if (selectedDate == null) {
-                    selectedDate = new Date();
-                }
-                showHourReport(selectedDate);
-                // START THREAD
-                threadLoadConnectionsTotals = new ThreadLoadConnectionsTotals();
-                threadLoadConnectionsTotals.start();
-            }
-        });
-
+        closeSettingsFragment();
     }
 
 
@@ -458,7 +507,7 @@ public class MainActivity extends Activity implements  HourReportFragment.OnFrag
             if( settingsFragment!=null && settingsFragment.isVisible() ) {
                 //final FrameLayout frameLayoutDatePicker = (FrameLayout) findViewById(R.id.frameLayoutDatePicker);
                 View settingsView = settingsFragment.getView();
-                ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(settingsView, "Y", settingsView.getY(), -settingsView.getHeight());
+                ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(settingsView, "Y", settingsView.getY(), settingsView.getHeight() );
                 objectAnimator.setDuration(300);
                 objectAnimator.addListener(new Animator.AnimatorListener() {
                     @Override
