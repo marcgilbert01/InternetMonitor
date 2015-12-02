@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
+import android.text.Html;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -16,6 +17,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import java.io.IOException;
+import java.io.InputStream;
 
 import marc.internetmonitor.Background.InternetCheckService;
 import marc.internetmonitor.R;
@@ -30,6 +33,7 @@ public class SettingsFragment extends Fragment {
     private ToggleButton toggleButton;
     private EditText editTextUrlToCheck;
     private Button buttonCloseSettings;
+    private TextView textViewSettingsDescription;
 
     // TODO: Rename and change types and number of parameters
     public static SettingsFragment newInstance() {
@@ -56,6 +60,20 @@ public class SettingsFragment extends Fragment {
 
         // Inflate the layout for this fragment
         MovingLinearLayout movingLinearLayout = (MovingLinearLayout) inflater.inflate(R.layout.fragment_settings, container, false);
+
+        // INSERT INTERNET MONITOR DESCRIPTION
+        try {
+            InputStream inputStream = getResources().getAssets().open("settings_description.html");
+            int size = inputStream.available();
+            byte[] buffer = new byte[size];
+            inputStream.read(buffer);
+            inputStream.close();
+            String html = new String(buffer);
+            textViewSettingsDescription = (TextView) movingLinearLayout.findViewById(R.id.textViewSettingsDescription);
+            textViewSettingsDescription.setText(Html.fromHtml( html ));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         // SET LISTENER ON START STOP SERVICE BUTTON
         toggleButton = (ToggleButton) movingLinearLayout.findViewById(R.id.toggleButtonInternetCheckService);
@@ -85,6 +103,7 @@ public class SettingsFragment extends Fragment {
         editTextUrlToCheck.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                textViewSettingsDescription.setVisibility(View.GONE);
             }
 
             @Override
@@ -94,6 +113,7 @@ public class SettingsFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable s) {
                 InternetCheckService.setUrkToCheck( s.toString() );
+                textViewSettingsDescription.setVisibility(View.VISIBLE);
             }
         });
 
