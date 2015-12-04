@@ -67,7 +67,7 @@ public class MainActivity extends Activity implements  HourReportFragment.OnFrag
         setContentView(R.layout.activity_main);
         handler = new Handler();
 
-        showHourReport(new Date());
+        selectedDate = new Date();
 
         threadLoadConnectionsTotals = new ThreadLoadConnectionsTotals();
         threadLoadConnectionsTotals.start();
@@ -110,16 +110,34 @@ public class MainActivity extends Activity implements  HourReportFragment.OnFrag
             @Override
             public void onClick(View v) {
 
-                if( settingsFragment!=null && settingsFragment.isVisible() ) {
+                if (settingsFragment != null && settingsFragment.isVisible()) {
                     closeSettingsFragment();
-                }
-                else{
+                } else {
                     openSettingsFrament();
                 }
 
             }
         });
 
+
+        // OPEN SETTINGS FRAGMENT
+        new Thread(){
+            @Override
+            public void run() {
+                super.run();
+                try {
+                    sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        openSettingsFrament();
+                    }
+                });
+             }
+        }.start();
 
 
     }
@@ -207,7 +225,6 @@ public class MainActivity extends Activity implements  HourReportFragment.OnFrag
     class Action {
 
         public void execute(){
-
         }
 
     }
@@ -405,9 +422,11 @@ public class MainActivity extends Activity implements  HourReportFragment.OnFrag
     private void clearFragments(final Action action){
 
 
+            Boolean noFragmentVisible = true;
+
             // MOVE HOUR SELECT TO THE RIGHT AND REMOVE IT
             if( hourSelectFragment!=null && hourSelectFragment.isVisible() ) {
-                //FrameLayout frameLayoutHourSelectContainer = (FrameLayout) findViewById(R.id.frameLayoutHourSelectContainer);
+
                 View hourSelectView =  hourSelectFragment.getView();
                 ObjectAnimator objectAnimatorHourSelect = ObjectAnimator.ofFloat(hourSelectView, "X", hourSelectView.getX(), hourSelectView.getX() + hourSelectView.getWidth());
                 objectAnimatorHourSelect.addListener(new Animator.AnimatorListener() {
@@ -438,7 +457,8 @@ public class MainActivity extends Activity implements  HourReportFragment.OnFrag
             // MOVE HOUR REPORT TO THE LEFT AND REPLACE IT WITH DATEPICKER
             //MovingLinearLayout movingLinearLayoutHourReport = (MovingLinearLayout) currentHourReportFragment.getView();
             if( currentHourReportFragment!=null && hourSelectFragment.isVisible() ) {
-                //FrameLayout frameLayoutHourReportContainer = (FrameLayout) findViewById(R.id.frameLayoutHourReportContainer);
+
+                noFragmentVisible = false;
                 View hourReportView = currentHourReportFragment.getView();
                 ObjectAnimator objectAnimatorHourReport = ObjectAnimator.ofFloat(hourReportView, "X", hourReportView.getX(), -hourReportView.getWidth());
                 objectAnimatorHourReport.setDuration(300);
@@ -470,7 +490,8 @@ public class MainActivity extends Activity implements  HourReportFragment.OnFrag
 
             // MOVE DATEPICKER TO THE TOP AND REMOVE IT
             if( datePickerFragment!=null && datePickerFragment.isVisible() ) {
-                //final FrameLayout frameLayoutDatePicker = (FrameLayout) findViewById(R.id.frameLayoutDatePicker);
+
+                noFragmentVisible = false;
                 View datePickerView = datePickerFragment.getView();
                 ObjectAnimator objectAnimatorDatePicker = ObjectAnimator.ofFloat( datePickerView , "Y", datePickerView.getY() ,  -datePickerView.getHeight()  );
                 objectAnimatorDatePicker.setDuration(300);
@@ -505,7 +526,8 @@ public class MainActivity extends Activity implements  HourReportFragment.OnFrag
 
             // MOVE SETTINGS TO THE TOP AND REMOVE IT
             if( settingsFragment!=null && settingsFragment.isVisible() ) {
-                //final FrameLayout frameLayoutDatePicker = (FrameLayout) findViewById(R.id.frameLayoutDatePicker);
+
+                noFragmentVisible = false;
                 View settingsView = settingsFragment.getView();
                 ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(settingsView, "Y", settingsView.getY(), settingsView.getHeight() );
                 objectAnimator.setDuration(300);
@@ -535,6 +557,12 @@ public class MainActivity extends Activity implements  HourReportFragment.OnFrag
                 });
                 objectAnimator.start();
             }
+
+
+            if( noFragmentVisible ){
+                action.execute();
+            }
+
 
 
     }

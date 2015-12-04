@@ -240,8 +240,9 @@ public class HourSelectFragment extends Fragment {
                 }
                 View viewTab = linearLayoutHrTabs.getChildAt(getHourSelected());
                 viewTab.setBackgroundResource(R.color.internetmonitor_listbackground);
-                ObjectAnimator animation = ObjectAnimator.ofFloat(viewTab, "rotationX", 0f, 360f);
-                animation.setDuration(600);
+                //ObjectAnimator animation = ObjectAnimator.ofFloat(viewTab, "rotationX", 0f, 360f);
+                ObjectAnimator animation = ObjectAnimator.ofFloat(viewTab, "alpha", 0f, 1f);
+                animation.setDuration(400);
                 animation.start();
             }
         });
