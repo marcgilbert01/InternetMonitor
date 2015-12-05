@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -62,10 +63,16 @@ public class DatePickerFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        // Inflate the layout for this fragment
-        MovingLinearLayout movingLinearLayout = (MovingLinearLayout) inflater.inflate(R.layout.fragment_date_picker, container, false);
+        // INFLATE THE LAYOUT FOR THOIS FRAGMENT
+        MovingLinearLayout movingLinearLayout = null;
+        if( getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE ){
+            movingLinearLayout = (MovingLinearLayout) inflater.inflate(R.layout.fragment_date_picker_horizontal, container, false);
+        }
+        else {
+            movingLinearLayout = (MovingLinearLayout) inflater.inflate(R.layout.fragment_date_picker, container, false);
+        }
 
-
+        // CONFIGURE DATE PICKER
         final DatePicker datePicker = (DatePicker) movingLinearLayout.findViewById(R.id.datePicker);
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(selectedDate);

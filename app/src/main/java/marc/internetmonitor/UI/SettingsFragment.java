@@ -2,6 +2,7 @@ package marc.internetmonitor.UI;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
@@ -16,6 +17,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.ToggleButton;
+
+import org.achartengine.renderer.XYMultipleSeriesRenderer;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -59,7 +62,13 @@ public class SettingsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
-        MovingLinearLayout movingLinearLayout = (MovingLinearLayout) inflater.inflate(R.layout.fragment_settings, container, false);
+        MovingLinearLayout movingLinearLayout = null;
+        if( getActivity().getResources().getConfiguration().orientation== Configuration.ORIENTATION_LANDSCAPE ) {
+            movingLinearLayout = (MovingLinearLayout) inflater.inflate(R.layout.fragment_settings_horizontal, container, false);
+        }
+        else{
+            movingLinearLayout = (MovingLinearLayout) inflater.inflate(R.layout.fragment_settings, container, false);
+        }
 
         // INSERT INTERNET MONITOR DESCRIPTION
         try {

@@ -15,6 +15,8 @@ import android.os.Handler;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -155,12 +157,20 @@ public class MainActivity extends Activity implements  HourReportFragment.OnFrag
             public void execute() {
 
                 super.execute();
+                // RESIZE FRAME LAYOUT TOP TO MATCH PARENT
+                /*
+                FrameLayout frameLayoutTop = (FrameLayout) findViewById(R.id.frameLayoutTop);
+                ViewGroup.LayoutParams layoutParams = frameLayoutTop.getLayoutParams();
+                layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT;
+                frameLayoutTop.setLayoutParams(layoutParams);
+                */
+                // ADD FRAGMENT
                 FragmentManager fragmentManager = getFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.setCustomAnimations(R.animator.topfragment_in_from_bottom, 0 );
                 settingsFragment = SettingsFragment.newInstance();
-                fragmentTransaction.replace( R.id.frameLayoutTop, settingsFragment );
-                fragmentTransaction.commit();
+                fragmentTransaction.replace(R.id.frameLayoutTop, settingsFragment);
+                fragmentTransaction.commit();;
 
             }
         };

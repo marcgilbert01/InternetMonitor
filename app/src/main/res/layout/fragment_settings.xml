@@ -13,18 +13,26 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/internetmonitorListStyle"
-        android:layout_margin="5dp">
+        android:layout_margin="5dp"
+        android:layout_weight="1">
 
-        <TextView
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text=""
-            android:id="@+id/textViewSettingsDescription"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="0dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"/>
+            android:id="@+id/scrollView2"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text=""
+                android:id="@+id/textViewSettingsDescription"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="0dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp" />
+        </ScrollView>
 
         <LinearLayout
             android:orientation="vertical"
