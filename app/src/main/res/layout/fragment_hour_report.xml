@@ -26,21 +26,10 @@
 
      />
 
-    <ScrollView
+    <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/scrollViewConectionRecords"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="5sp"
-        >
-
-        <TableLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:id="@+id/tableLayoutConnectionRecords">
-        </TableLayout>
-    </ScrollView>
+        android:id="@+id/recyclerViewConnectionRecords" />
 
     <ProgressBar
         style="?android:attr/progressBarStyleLarge"
