@@ -38,7 +38,6 @@ public class SettingsFragment extends Fragment {
     private Button buttonCloseSettings;
     private TextView textViewSettingsDescription;
 
-    // TODO: Rename and change types and number of parameters
     public static SettingsFragment newInstance() {
 
         SettingsFragment fragment = new SettingsFragment();

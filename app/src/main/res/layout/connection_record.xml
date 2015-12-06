@@ -8,7 +8,8 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/textViewTime"/>
+        android:id="@+id/textViewTime"
+        android:text="12:00:00" />
 
     <CheckBox
         android:layout_width="wrap_content"
@@ -20,6 +21,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="0ms"
-        android:id="@+id/textViewResponseTime"/>
+        android:id="@+id/textViewResponseTime"
+        android:layout_weight="1" />
 
 </TableRow>

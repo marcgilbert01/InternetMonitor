@@ -157,13 +157,6 @@ public class MainActivity extends Activity implements  HourReportFragment.OnFrag
             public void execute() {
 
                 super.execute();
-                // RESIZE FRAME LAYOUT TOP TO MATCH PARENT
-                /*
-                FrameLayout frameLayoutTop = (FrameLayout) findViewById(R.id.frameLayoutTop);
-                ViewGroup.LayoutParams layoutParams = frameLayoutTop.getLayoutParams();
-                layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT;
-                frameLayoutTop.setLayoutParams(layoutParams);
-                */
                 // ADD FRAGMENT
                 FragmentManager fragmentManager = getFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -465,7 +458,6 @@ public class MainActivity extends Activity implements  HourReportFragment.OnFrag
             }
 
             // MOVE HOUR REPORT TO THE LEFT AND REPLACE IT WITH DATEPICKER
-            //MovingLinearLayout movingLinearLayoutHourReport = (MovingLinearLayout) currentHourReportFragment.getView();
             if( currentHourReportFragment!=null && hourSelectFragment.isVisible() ) {
 
                 noFragmentVisible = false;

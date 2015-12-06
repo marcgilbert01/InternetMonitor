@@ -147,6 +147,8 @@ public class Logger {
         public Integer responseCode;
         public Long completionTime;
         public String comments;
+        public Boolean refreshed = false;
+
 
     }
 

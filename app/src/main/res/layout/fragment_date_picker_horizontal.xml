@@ -5,9 +5,7 @@
              tools:context="marc.internetmonitor.UI.DatePickerFragment"
               android:orientation="horizontal">
 
-    <!-- TODO: Update blank fragment layout -->
-
-    <DatePicker
+     <DatePicker
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/datePicker"

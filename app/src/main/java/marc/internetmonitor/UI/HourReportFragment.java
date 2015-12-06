@@ -13,9 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ProgressBar;
-import android.widget.ScrollView;
-import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 
 import java.text.ParseException;
@@ -68,13 +65,24 @@ public class HourReportFragment extends Fragment implements View.OnTouchListener
     }
 
 
+    @Override
+    public void onAttach(Activity activity) {
+
+        super.onAttach(activity);
+
+        try {
+            mListener = (OnFragmentInteractionListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString() + " must implement OnFragmentInteractionListener");
+        }
+
+    }
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            //dateAsStr = getArguments().getString(ARG_DATE_PARAM);
             try {
                 selectedHour = DATE_HR_FORMAT.parse( getArguments().getString(ARG_DATE_PARAM) );
             } catch (ParseException e) {
@@ -84,13 +92,8 @@ public class HourReportFragment extends Fragment implements View.OnTouchListener
         handler = new Handler();
         gestureDetector = new GestureDetector( getActivity() , new HourReportFragmentOnGestureListener());
         onTouchListener = this;
-    }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        threadLoadConnectionsStatus = new ThreadLoadConnectionsStatus();
-        threadLoadConnectionsStatus.start();
+
 
     }
 
@@ -102,11 +105,11 @@ public class HourReportFragment extends Fragment implements View.OnTouchListener
 
         // Inflate the layout for this fragment
         MovingLinearLayout movingLinearLayout = (MovingLinearLayout) inflater.inflate(R.layout.fragment_hour_report, container, false);
-        movingLinearLayout.setOnTouchListener( this );
+        movingLinearLayout.setOnTouchListener(this);
 
-        //
+        // CREATE RECYCLER VIEW AND ADD ADAPTER WITH EMPTY DATA
         recyclerViewConnectionRecords = (RecyclerView) movingLinearLayout.findViewById(R.id.recyclerViewConnectionRecords);
-        recyclerViewConnectionRecords.setLayoutManager( new LinearLayoutManager(getActivity()) );
+        recyclerViewConnectionRecords.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerViewConnectionRecords.setOnTouchListener(onTouchListener);
 
 
@@ -114,18 +117,18 @@ public class HourReportFragment extends Fragment implements View.OnTouchListener
 
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+
+    }
 
 
     @Override
-    public void onAttach(Activity activity) {
-
-        super.onAttach(activity);
-
-        try {
-            mListener = (OnFragmentInteractionListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement OnFragmentInteractionListener");
-        }
+    public void onResume() {
+        super.onResume();
+        threadLoadConnectionsStatus = new ThreadLoadConnectionsStatus();
+        threadLoadConnectionsStatus.start();
 
     }
 
@@ -173,7 +176,7 @@ public class HourReportFragment extends Fragment implements View.OnTouchListener
 
                 // WAIT FOR ANIMATION TO COMPLETE
                 long animTime = getResources().getInteger(R.integer.animation_time);
-                sleep(animTime);
+                sleep(animTime+50);
 
                 // GET DATA
                 Logger.LogRecord[] logRecords = Logger.getConnectionDataForOneHour(startDateTime);
@@ -183,50 +186,12 @@ public class HourReportFragment extends Fragment implements View.OnTouchListener
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
+
                         recyclerViewAdapterConnectionRecords = new RecyclerViewAdapterConnectionRecords(logRecordArrayList);
                         recyclerViewConnectionRecords.setAdapter(recyclerViewAdapterConnectionRecords);
+
                     }
                 });
-
-
-                /*
-                SimpleDateFormat simpleDateFormatTime = new SimpleDateFormat("HH:mm:ss");
-                int l = 0;
-                while (l < logRecords.length && keepRefreshing == true) {
-
-                    //System.out.println( logRecord.timeLogged );
-                    final TableRow tableRowConnectionRecord = (TableRow) inflater.inflate(R.layout.connection_record, null);
-                    TextView textViewTime = (TextView) tableRowConnectionRecord.findViewById(R.id.textViewTime);
-                    CheckBox checkBoxConnectionResponse = (CheckBox) tableRowConnectionRecord.findViewById(R.id.checkBoxConnectionResponseCode);
-                    TextView textViewResponseTime = (TextView) tableRowConnectionRecord.findViewById(R.id.textViewResponseTime);
-                    if ( logRecords[l].timeLogged != null ) {
-
-                        textViewTime.setText(simpleDateFormatTime.format(new Date(logRecords[l].timeLogged)));
-                        if ( logRecords[l].responseCode!=null && logRecords[l].responseCode == 200) {
-                            checkBoxConnectionResponse.setChecked(true);
-                            textViewResponseTime.setText( logRecords[l].completionTime+" ms" );
-                        }
-                        else{
-                            textViewResponseTime.setText("FAILED");
-                            textViewResponseTime.setTextColor(RED);
-                        }
-
-                    } else {
-                        textViewTime.setText(simpleDateFormatTime.format(new Date(logRecords[l].timeToShow)));
-                        textViewResponseTime.setText("NO DATA");
-                    }
-
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-
-                            tableLayoutConnectionRecords.addView(tableRowConnectionRecord);
-                        }
-                    });
-                    l++;
-                }
-                */
-
 
                 // STOP SPINNER AND SHOW LIST
                 handler.post(new Runnable() {
@@ -237,19 +202,23 @@ public class HourReportFragment extends Fragment implements View.OnTouchListener
                     }
                 });
 
-                sleep(2000);
 
+                sleep(1000);
                 // IF WE ARE SHOWING CURRENT HOUR MOVE TO CURRENT TIME
-                /*
                 if(  (startDateTime.getTime()+(3600L*1000L)) <  System.currentTimeMillis()  ||  System.currentTimeMillis()<startDateTime.getTime()  ){
                     keepRefreshing = false;
                 }
                 else {
                     final int index = (int) ((System.currentTimeMillis() - startDateTime.getTime()) / InternetCheckService.INTERVAL);
-                    int top = recyclerViewConnectionRecords.getChildAt(index).getTop();
-                    recyclerViewConnectionRecords.scrollTo(0, top-200 );
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerViewConnectionRecords.getLayoutManager();
+                            linearLayoutManager.scrollToPositionWithOffset(index, 300);
+                        }
+                    });
                 }
-                */
+
 
                 // REFRESH CURRENT TIME DATA
                 while( keepRefreshing ) {
@@ -266,6 +235,9 @@ public class HourReportFragment extends Fragment implements View.OnTouchListener
                         logRecords = Logger.getConnectionData(from, to);
 
                         final ArrayList<Logger.LogRecord> refreshedLogRecords = new ArrayList<Logger.LogRecord>( Arrays.asList(logRecords) );
+                        for(Logger.LogRecord logRecord : refreshedLogRecords){
+                            logRecord.refreshed = true;
+                        }
 
                         handler.post(new Runnable() {
                             @Override
@@ -274,103 +246,9 @@ public class HourReportFragment extends Fragment implements View.OnTouchListener
                             }
                         });
 
-/*
-                        l = 0;
-                        while( l<logRecords.length && keepRefreshing==true ){
-
-
-
-                            final TableRow tableRowConnectionRecord = (TableRow) inflater.inflate(R.layout.connection_record, null);
-                            TextView textViewTime = (TextView) tableRowConnectionRecord.findViewById(R.id.textViewTime);
-                            CheckBox checkBoxConnectionResponse = (CheckBox) tableRowConnectionRecord.findViewById(R.id.checkBoxConnectionResponseCode);
-                            TextView textViewResponseTime = (TextView) tableRowConnectionRecord.findViewById(R.id.textViewResponseTime);
-
-                            if (logRecords[l].timeLogged != null) {
-
-                                textViewTime.setText(simpleDateFormatTime.format(new Date(logRecords[l].timeLogged)));
-                                if ( logRecords[l].responseCode!=null && logRecords[l].responseCode == 200) {
-                                    checkBoxConnectionResponse.setChecked(true);
-                                    textViewResponseTime.setText( logRecords[l].completionTime+" ms" );
-                                }
-                                else{
-                                    textViewResponseTime.setText("FAILED");
-                                    textViewResponseTime.setTextColor(RED);
-                                }
-
-                            } else {
-                                textViewTime.setText(simpleDateFormatTime.format(new Date(logRecords[l].timeToShow)));
-                                textViewResponseTime.setText("NO DATA");
-                            }
-
-                            final int index = (int) ( (logRecords[l].timeToShow - startDateTime.getTime() ) / InternetCheckService.INTERVAL);
-                            handler.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    tableRowConnectionRecord.setBackgroundColor(0x44666666);
-                                    tableLayoutConnectionRecords.removeViewAt(index);
-                                    tableLayoutConnectionRecords.addView(tableRowConnectionRecord, index);
-                                }
-                            });
-                            l++;
-                        }
-*/
-
-
                     }
 
-
-
-                    // IF WE DISPLAYING HOURS IN THE PAST STOP REFRESHING
-                    /*
-                    if(  (startDateTime.getTime()+(3600L*1000L)) <  System.currentTimeMillis()  ||  System.currentTimeMillis()<startDateTime.getTime()  ){
-                        keepRefreshing = false;
-                    }
-                    else {
-
-                        Long from = System.currentTimeMillis() - 30 * 1000; // NOW -30sec
-                        Long to = System.currentTimeMillis();
-                        logRecords = Logger.getConnectionData(from, to);
-                        l = 0;
-                        while( l<logRecords.length && keepRefreshing==true ){
-
-                            final TableRow tableRowConnectionRecord = (TableRow) inflater.inflate(R.layout.connection_record, null);
-                            TextView textViewTime = (TextView) tableRowConnectionRecord.findViewById(R.id.textViewTime);
-                            CheckBox checkBoxConnectionResponse = (CheckBox) tableRowConnectionRecord.findViewById(R.id.checkBoxConnectionResponseCode);
-                            TextView textViewResponseTime = (TextView) tableRowConnectionRecord.findViewById(R.id.textViewResponseTime);
-
-                            if (logRecords[l].timeLogged != null) {
-
-                                textViewTime.setText(simpleDateFormatTime.format(new Date(logRecords[l].timeLogged)));
-                                if ( logRecords[l].responseCode!=null && logRecords[l].responseCode == 200) {
-                                    checkBoxConnectionResponse.setChecked(true);
-                                    textViewResponseTime.setText( logRecords[l].completionTime+" ms" );
-                                }
-                                else{
-                                    textViewResponseTime.setText("FAILED");
-                                    textViewResponseTime.setTextColor(RED);
-                                }
-
-                            } else {
-                                textViewTime.setText(simpleDateFormatTime.format(new Date(logRecords[l].timeToShow)));
-                                textViewResponseTime.setText("NO DATA");
-                            }
-
-                            final int index = (int) ( (logRecords[l].timeToShow - startDateTime.getTime() ) / InternetCheckService.INTERVAL);
-                            handler.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    tableRowConnectionRecord.setBackgroundColor(0x44666666);
-                                    tableLayoutConnectionRecords.removeViewAt(index);
-                                    tableLayoutConnectionRecords.addView(tableRowConnectionRecord, index);
-                                }
-                            });
-                            l++;
-                        }
-                    }
-                    sleep(5000);
-                    */
                 }
-
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -418,7 +296,6 @@ public class HourReportFragment extends Fragment implements View.OnTouchListener
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
 
-            //System.out.println("########## FLING ########### velocityX="+velocityX+"  velocityY="+velocityY);
             if( velocityX < -700  &&  ( Math.abs(velocityX) >  Math.abs(velocityY)*2 ) ){
                 keepRefreshing = false;
                 mListener.goToNextHour();
@@ -466,7 +343,7 @@ public class HourReportFragment extends Fragment implements View.OnTouchListener
         @Override
         public ViewHolderConnectionRecord onCreateViewHolder(ViewGroup parent, int viewType) {
 
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.connection_record,null);
+            View view = LayoutInflater.from( parent.getContext()).inflate(R.layout.connection_record , null );
 
             ViewHolderConnectionRecord viewHolderConnectionRecord = new ViewHolderConnectionRecord(view);
 
@@ -477,13 +354,14 @@ public class HourReportFragment extends Fragment implements View.OnTouchListener
         @Override
         public void onBindViewHolder(ViewHolderConnectionRecord holder, int position) {
 
-            if (logRecords.get(position).timeLogged != null) {
+            if ( logRecords.get(position).timeLogged != null ) {
 
                 holder.textViewTime.setText(simpleDateFormatTime.format(new Date(logRecords.get(position).timeLogged)));
                 if (logRecords.get(position).responseCode != null && logRecords.get(position).responseCode == 200) {
 
                     holder.checkBoxConnectionResponseCode.setChecked(true);
                     holder.textViewResponseTime.setText(logRecords.get(position).completionTime + " ms");
+                    holder.textViewResponseTime.setTextColor(0xff000000);
                 } else {
                     holder.textViewResponseTime.setText("FAILED");
                     holder.textViewResponseTime.setTextColor(RED);
@@ -492,11 +370,20 @@ public class HourReportFragment extends Fragment implements View.OnTouchListener
             }
             else{
                 holder.textViewTime.setText(simpleDateFormatTime.format(new Date( logRecords.get(position).timeToShow ) ) );
+                holder.checkBoxConnectionResponseCode.setChecked(false);
                 holder.textViewResponseTime.setText("NO DATA");
+                holder.textViewResponseTime.setTextColor(0xff000000);
+            }
 
+            if( logRecords.get(position).refreshed ){
+                holder.itemView.setBackgroundColor(0x44666666);
+            }
+            else{
+                holder.itemView.setBackgroundColor(0x00000000);
             }
 
         }
+
 
 
         @Override
@@ -508,20 +395,28 @@ public class HourReportFragment extends Fragment implements View.OnTouchListener
 
         public class ViewHolderConnectionRecord extends RecyclerView.ViewHolder{
 
-
             TextView textViewTime;
             CheckBox checkBoxConnectionResponseCode;
             TextView textViewResponseTime;
+            View itemView;
 
             public ViewHolderConnectionRecord(View itemView) {
                 super(itemView);
 
+                this.itemView = itemView;
                 textViewTime = (TextView) itemView.findViewById(R.id.textViewTime);
                 checkBoxConnectionResponseCode = (CheckBox) itemView.findViewById(R.id.checkBoxConnectionResponseCode);
                 textViewResponseTime = (TextView) itemView.findViewById(R.id.textViewResponseTime);
 
             }
         }
+
+
+
+
+
+
+
 
     }
 
